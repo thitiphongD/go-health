@@ -3,7 +3,9 @@ package main
 import (
 	"net/http"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -41,10 +43,42 @@ func main() {
 			})
 			return
 		}
-		c.JSON(http.StatusOK, gin.H{
-			"register": json,
-		})
+
+		var userExit User
+
+		db.Where("user = ?", json.User).First(&userExit)
+		if userExit.ID > 0 {
+			c.JSON(http.StatusOK, gin.H{
+				"status":  "error",
+				"message": "User exist",
+			})
+			return
+		}
+
+		encryptedPassword, _ := bcrypt.GenerateFromPassword([]byte(json.Pass), 10)
+
+		user := User{
+			User: json.User,
+			Pass: string(encryptedPassword),
+			Name: json.Name,
+		}
+
+		db.Create(&user)
+		if user.ID > 0 {
+			c.JSON(http.StatusOK, gin.H{
+				"status":  "Ok",
+				"message": "create success",
+				"userId":  user.ID,
+			})
+		} else {
+			c.JSON(http.StatusOK, gin.H{
+				"status":  "error",
+				"message": "create fail",
+			})
+		}
 	})
+
+	router.Use(cors.Default())
 
 	router.Run()
 }
