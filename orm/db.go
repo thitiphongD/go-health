@@ -9,6 +9,7 @@ var Db *gorm.DB
 var err error
 
 func InitDB() {
+	//dsn := os.Getenv("MYSQL_DSN")
 	dsn := "root:daew@tcp(127.0.0.1:3306)/go_health?charset=utf8mb4&parseTime=True&loc=Local"
 	Db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 

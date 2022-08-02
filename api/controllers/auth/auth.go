@@ -3,6 +3,7 @@ package auth
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -60,7 +61,7 @@ func Register(c *gin.Context) {
 	}
 }
 
-var HelthHomeSecret []byte
+var HealthHomeSecret []byte
 
 type LoginBody struct {
 	User string `json:"user" binding:"required"`
@@ -91,14 +92,14 @@ func Login(c *gin.Context) {
 	err := bcrypt.CompareHashAndPassword([]byte(userExit.Pass), []byte(json.Pass))
 
 	if err == nil {
-		HelthHomeSecret = []byte("my_secret_key")
+		HealthHomeSecret = []byte(os.Getenv("JWT_SECRET_KEY"))
 		token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 			"userId": userExit.ID,
 			"nbf":    time.Date(2015, 10, 10, 12, 0, 0, 0, time.UTC).Unix(),
 		})
 
 		// Sign and get the complete encoded token as a string using the secret
-		tokenString, err := token.SignedString(HelthHomeSecret)
+		tokenString, err := token.SignedString(HealthHomeSecret)
 
 		fmt.Println(tokenString, err)
 
