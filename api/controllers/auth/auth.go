@@ -1,9 +1,12 @@
 package auth
 
 import (
+	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/thitiphongD/go-health/orm"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -57,6 +60,8 @@ func Register(c *gin.Context) {
 	}
 }
 
+var HelthHomeSecret []byte
+
 type LoginBody struct {
 	User string `json:"user" binding:"required"`
 	Pass string `json:"pass" binding:"required"`
@@ -86,9 +91,21 @@ func Login(c *gin.Context) {
 	err := bcrypt.CompareHashAndPassword([]byte(userExit.Pass), []byte(json.Pass))
 
 	if err == nil {
+		HelthHomeSecret = []byte("my_secret_key")
+		token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+			"userId": userExit.ID,
+			"nbf":    time.Date(2015, 10, 10, 12, 0, 0, 0, time.UTC).Unix(),
+		})
+
+		// Sign and get the complete encoded token as a string using the secret
+		tokenString, err := token.SignedString(HelthHomeSecret)
+
+		fmt.Println(tokenString, err)
+
 		c.JSON(http.StatusOK, gin.H{
 			"status":  "Ok",
 			"message": "login success",
+			"token":   tokenString,
 		})
 	} else {
 		c.JSON(http.StatusOK, gin.H{
