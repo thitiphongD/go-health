@@ -4,6 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 type Register struct {
@@ -12,8 +14,24 @@ type Register struct {
 	Name string `json:"name" binding:"required"`
 }
 
+type User struct {
+	gorm.Model
+	User string
+	Pass string
+	Name string
+}
+
 func main() {
 	router := gin.Default()
+
+	dsn := "root:daew@tcp(127.0.0.1:3306)/go_health?charset=utf8mb4&parseTime=True&loc=Local"
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	db.AutoMigrate(&User{})
 
 	router.POST("/register", func(c *gin.Context) {
 		var json Register
@@ -28,5 +46,5 @@ func main() {
 		})
 	})
 
-	router.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+	router.Run()
 }
