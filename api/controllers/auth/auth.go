@@ -94,11 +94,11 @@ func Login(c *gin.Context) {
 	if err == nil {
 		HealthHomeSecret = []byte(os.Getenv("JWT_SECRET_KEY"))
 		token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-			"userId": userExit.ID,
-			"nbf":    time.Date(2015, 10, 10, 12, 0, 0, 0, time.UTC).Unix(),
+			"userId":    userExit.ID,
+			"nbf":       time.Date(2015, 10, 10, 12, 0, 0, 0, time.UTC).Unix(),
+			"expiresAt": time.Now().Add(time.Minute * 1).Unix(),
 		})
 
-		// Sign and get the complete encoded token as a string using the secret
 		tokenString, err := token.SignedString(HealthHomeSecret)
 
 		fmt.Println(tokenString, err)

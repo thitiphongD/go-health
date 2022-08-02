@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	AuthController "github.com/thitiphongD/go-health/api/controllers/auth"
+	UserController "github.com/thitiphongD/go-health/api/controllers/user"
 	"github.com/thitiphongD/go-health/orm"
 )
 
@@ -21,6 +22,7 @@ func main() {
 
 	router.POST("/register", AuthController.Register)
 	router.POST("/login", AuthController.Login)
+	router.GET("/users/read-all", UserController.ReadAllUser)
 	router.Use(cors.Default())
 	router.Run()
 }
