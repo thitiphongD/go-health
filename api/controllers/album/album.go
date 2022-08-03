@@ -13,6 +13,17 @@ func ReadAllAlbum(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"status":  "OK",
 		"message": "Read Albums Success",
-		"users":   albums,
+		"albums":  albums,
+	})
+}
+
+func ReadOneAlbum(c *gin.Context) {
+	id := c.Param("id")
+	var album orm.Album
+	orm.Db.First(&album, id)
+	c.JSON(http.StatusOK, gin.H{
+		"status":  "OK",
+		"message": "Read One Album Success",
+		"album":   album,
 	})
 }

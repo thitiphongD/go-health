@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	ReadAllAlbumController "github.com/thitiphongD/go-health/api/controllers/album"
+	ReadOneAlbumController "github.com/thitiphongD/go-health/api/controllers/album"
 	AuthController "github.com/thitiphongD/go-health/api/controllers/auth"
 	UserController "github.com/thitiphongD/go-health/api/controllers/user"
 	"github.com/thitiphongD/go-health/api/middlewares"
@@ -29,7 +30,7 @@ func main() {
 	authorized.GET("/profile", UserController.Profile)
 
 	router.GET("/albums", ReadAllAlbumController.ReadAllAlbum)
-
+	router.GET("/albums/:id", ReadOneAlbumController.ReadOneAlbum)
 	router.Use(cors.Default())
 	router.Run()
 }
