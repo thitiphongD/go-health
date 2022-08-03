@@ -9,5 +9,5 @@
 1. list รูป >> read
 
 ## tech stack
-1. Go >> fin framework
+1. Go >> Gin framework
 1. Database  > msyql (localdatabase)
