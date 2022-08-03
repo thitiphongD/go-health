@@ -6,8 +6,11 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	CreateAlbumController "github.com/thitiphongD/go-health/api/controllers/album"
+	DeleteAlbumController "github.com/thitiphongD/go-health/api/controllers/album"
 	ReadAllAlbumController "github.com/thitiphongD/go-health/api/controllers/album"
 	ReadOneAlbumController "github.com/thitiphongD/go-health/api/controllers/album"
+	UpdateAlbumController "github.com/thitiphongD/go-health/api/controllers/album"
 	AuthController "github.com/thitiphongD/go-health/api/controllers/auth"
 	UserController "github.com/thitiphongD/go-health/api/controllers/user"
 	"github.com/thitiphongD/go-health/api/middlewares"
@@ -31,6 +34,9 @@ func main() {
 
 	router.GET("/albums", ReadAllAlbumController.ReadAllAlbum)
 	router.GET("/albums/:id", ReadOneAlbumController.ReadOneAlbum)
+	router.POST("/albums", CreateAlbumController.CreateAlbum)
+	router.PATCH("/albums", UpdateAlbumController.UpdateAlbum)
+	router.DELETE("/albums/:id", DeleteAlbumController.DeleteAlbum)
 	router.Use(cors.Default())
 	router.Run()
 }
