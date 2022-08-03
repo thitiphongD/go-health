@@ -18,4 +18,10 @@ func InitDB() {
 	}
 
 	Db.AutoMigrate(&User{})
+	Db.AutoMigrate(&Album{})
+
+	// Db.Create(&Album{
+	// 	Imagename: "Cat",
+	// 	Image:     "https://pbs.twimg.com/media/DhxQ4RoWsAAgyww?format=jpg&name=medium",
+	// })
 }

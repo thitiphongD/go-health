@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/thitiphongD/go-health/orm"
+	"github.com/thitiphongD/go-health/api/orm"
 )
 
 func ReadAllUser(c *gin.Context) {

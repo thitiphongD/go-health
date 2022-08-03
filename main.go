@@ -6,10 +6,11 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	ReadAllAlbumController "github.com/thitiphongD/go-health/api/controllers/album"
 	AuthController "github.com/thitiphongD/go-health/api/controllers/auth"
 	UserController "github.com/thitiphongD/go-health/api/controllers/user"
-	"github.com/thitiphongD/go-health/middlewares"
-	"github.com/thitiphongD/go-health/orm"
+	"github.com/thitiphongD/go-health/api/middlewares"
+	"github.com/thitiphongD/go-health/api/orm"
 )
 
 func main() {
@@ -26,6 +27,9 @@ func main() {
 	authorized := router.Group("/users", middlewares.JWTAuthen())
 	authorized.GET("/readall", UserController.ReadAllUser)
 	authorized.GET("/profile", UserController.Profile)
+
+	router.GET("/albums", ReadAllAlbumController.ReadAllAlbum)
+
 	router.Use(cors.Default())
 	router.Run()
 }

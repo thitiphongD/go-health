@@ -8,7 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
-	"github.com/thitiphongD/go-health/orm"
+	"github.com/thitiphongD/go-health/api/orm"
 	"golang.org/x/crypto/bcrypt"
 )
 
